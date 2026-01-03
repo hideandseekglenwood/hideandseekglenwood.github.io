@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hide and Seek Across Glenwood</title>
+    <meta name="description" content="Official game manager for Hide and Seek Across Glenwood. Manage your hand, roll dice, and outsmart the seekers.">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="app-container">
+        <header class="game-header">
+            <h1>Hide & Seek <span class="accent-text">Glenwood</span></h1>
+            <div class="header-controls">
+                <button id="dice-btn" class="icon-btn" aria-label="Roll Dice">
+                    🎲
+                </button>
+            </div>
+        </header>
+
+        <main class="game-board">
+               <section class="status-bar" id="status-bar">
+                <p>Waiting for action...</p>
+            </section>
+            
+            <!-- Player Hand (Moved to Top) -->
+            <section class="hand-area">
+                <div class="hand-header">
+                    <h2>Your Hand <span id="hand-count">0/6</span></h2>
+                </div>
+                <div class="hand-cards" id="player-hand">
+                    <!-- Cards will be injected here -->
+                </div>
+            </section>
+
+            <!-- Turn/Action Status -->
+         
+
+             <!-- Action Buttons for Seekers' Questions -->
+            <section class="actions-grid">
+                <h2>Seeker Interactions</h2>
+                <div class="button-group">
+                    <button class="action-btn" data-action="radar">
+                        <span class="btn-title">Radar</span>
+                        <span class="btn-desc">Draw 3, Take 1</span>
+                    </button>
+                    <button class="action-btn" data-action="thermometer">
+                        <span class="btn-title">Thermometer</span>
+                        <span class="btn-desc">Draw 2, Take 1</span>
+                    </button>
+                    <button class="action-btn" data-action="measuring">
+                        <span class="btn-title">Measuring</span>
+                        <span class="btn-desc">Draw 1, Take 1</span>
+                    </button>
+                    <button class="action-btn" data-action="photos">
+                        <span class="btn-title">Photos</span>
+                        <span class="btn-desc">Draw 1, Take 1</span>
+                    </button>
+                    <button class="action-btn" data-action="oddball">
+                        <span class="btn-title">Oddball</span>
+                        <span class="btn-desc">Draw 2, Take 1</span>
+                    </button>
+                    <button class="action-btn secondary" data-action="draw1">
+                        <span class="btn-title">Manual Draw 1</span>
+                    </button>
+                </div>
+            </section>
+
+            <!-- Draw Piles / Decks (Moved to Bottom) -->
+         
+            
+            <!-- Secure Reset -->
+            <section class="reset-area">
+                <div class="slider-container" id="reset-slider-container">
+                    <div class="slider-bg">Slide to Reset</div>
+                    <div class="slider-thumb" id="reset-thumb">🗑️</div>
+                </div>
+            </section>
+
+        </main>
+
+ <span class="deck-count">Stats</span>
+
+           <section class="decarea">
+                <div class="deck-contaner" id="daw-pile">
+                    <div class="car">
+                        <span class="deck-label">Draw Pile</span>
+                        <span class="deck-count" id="deck-count">45</span>
+                    </div>
+                </div>
+                <div class="deck-cntainer" id="disard-pile">
+                    <div class="carot">
+                        <span class="deck-label">Discard</span>
+                        <span class="deck-count" id="discard-count">0</span>
+                    </div>
+                </div>
+            </section>
+
+        <!-- Modals -->
+        <div id="modal-overlay" class="modal-overlay hidden">
+            <!-- Card Selection Modal (Draw X Take Y) -->
+            <div id="selection-modal" class="modal hidden">
+                <button class="modal-close-icon" id="close-selection-x">&times;</button>
+                <h2 id="selection-title">Choose a Card</h2>
+                <p id="selection-desc">Select 1 card to keep. The others will be discarded.</p>
+                <div class="card-selection-grid" id="selection-grid"></div>
+                <button class="primary-btn" id="confirm-selection-btn" style="display: none;">Confirm Selection</button>
+            </div>
+
+            <!-- Dice Modal -->
+            <div id="dice-modal" class="modal hidden">
+                <button class="modal-close-icon" onclick="closeAllModals()">&times;</button>
+                <h2>Dice Roll</h2>
+                <div class="dice-display" id="dice-result">?</div>
+                <button class="primary-btn" id="roll-dice-action">Roll</button>
+                <button class="text-btn" id="close-dice">Close</button>
+            </div>
+
+            <!-- Card Detail/Cast Modal -->
+            <div id="card-detail-modal" class="modal hidden">
+                <div id="detail-card-view"></div>
+                <div class="modal-actions">
+                    <button class="primary-btn destruct" id="cast-card-btn">Use/Cast Card</button>
+                    <button class="text-btn" id="close-detail">Cancel</button>
+                </div>
+            </div>
+            
+            <!-- Generic Message Modal -->
+             <div id="message-modal" class="modal hidden">
+                <button class="modal-close-icon" onclick="closeAllModals()">&times;</button>
+                <h2 id="msg-title">Title</h2>
+                <p id="msg-body">Message body.</p>
+                <button class="primary-btn" id="close-msg">OK</button>
+            </div>
+
+            <!-- Confirmation Modal -->
+            <div id="confirm-modal" class="modal hidden" style="display: none;">
+                <h2 id="confirm-title">Are you sure?</h2>
+                <p id="confirm-body">This action cannot be undone.</p>
+                <div class="modal-actions">
+                    <button class="primary-btn destruct" id="confirm-yes">Yes, Proceed</button>
+                    <button class="text-btn" id="confirm-no">Cancel</button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <script src="cards.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
